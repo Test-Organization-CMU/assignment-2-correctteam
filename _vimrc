@@ -21,11 +21,20 @@ filetype plugin indent on
 " Open the NERDTree automatically when vim starts up.
 " autocmd VimEnter * NERDTree
 " Map a shortcut to toggle NERDTree
-map <C-t> :NERDTreeToggle<CR>
+map <C-a> :NERDTreeToggle<CR>
 
 " For the argdo command, enable the hidden option and ignore the modifications
 " when running :bnext etc.
 set hidden
+
+
+" Automatically execute ctags each time a file is saved.
+" Temperorily disable because the llvm source is too big.
+" autocmd BufWritePost * call system("ctags -R")
+"
+" Instead, manually press <F5> to regenearte the ctags
+"
+nnoremap <F5> :!ctags -R<CR>
 
 
 """"""""" For the Taglist plugin
