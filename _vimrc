@@ -60,7 +60,6 @@ set hls
 
 " Enable project specific vim settings
 set exrc
-set secure
 
 " Open Marked 2 with \m
 :nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr>

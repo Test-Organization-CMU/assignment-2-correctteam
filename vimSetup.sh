@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm -r ~/.vim
+rm -rf ~/.vim
 rm ~/.vimrc
 
 ln -s `pwd`/_vim ~/.vim
