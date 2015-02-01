@@ -83,3 +83,7 @@ nnoremap <F5> :!ctags -R<CR>
 nnoremap <silent> <F8> : TListToogle<CR>
 let TList_Use_Right_Window = 1
 let TList_Show_One_File = 1
+
+
+" Write better git commit messages
+autocmd filetype gitcommit setlocal spell textwidth=72
