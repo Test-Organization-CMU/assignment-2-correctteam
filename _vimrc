@@ -22,6 +22,11 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'kien/ctrlp.vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'w0ng/vim-hybrid'
+Plugin 'vim-airline/vim-airline'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -50,12 +55,12 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 "
 syntax enable
-colorscheme monokai
+" colorscheme monokai
+set background=dark
+colorscheme hybrid
 
 set ruler
-
 set nu
-
 set hls
 
 " Enable project specific vim settings
@@ -68,10 +73,15 @@ set tabstop=4
 set shiftwidth=4
 
 
+""""""""""""""""""""""""""""""""""""""""
+" NerdTree Plugin
+""""""""""""""""""""""""""""""""""""""""
 " Open NERDTree automatically when vim starts up
 " autocmd VimEnter * NERDTree
 " Map a shortcut to toggle NERDTree
 map <C-a> :NERDTreeToggle<CR>
+" close vim if the only window left is NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " For the argdo command, enable the hidden option and ignore the modifications
 " when running :bnext etc.
@@ -80,10 +90,33 @@ set hidden
 nnoremap <F5> :!ctags -R<CR>
 
 " Toggle taglist.vim
-nnoremap <silent> <F8> : TListToogle<CR>
-let TList_Use_Right_Window = 1
-let TList_Show_One_File = 1
+nnoremap <silent> <F8> : TlistToggle<CR>
+let Tlist_Use_Right_Window = 1
+let Tlist_Show_One_File = 1
 
 
 " Write better git commit messages
 autocmd filetype gitcommit setlocal spell textwidth=72
+
+
+" Options for CtrlP plugin
+let g:ctrlp_map = '<C-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+
+" Options for vim-markdown
+let g:vim_markdown_folding_disabled=1
+
+inoremap <C-q> <ESC>
+
+" Vim-Latex Suite 
+
+filetype plugin on
+set grepprg=grep\ -nH\ $*
+filetype indent on
+let g:tex_flavor='latex'
+let g:Tex_ViewRule_pdf = '/Applications/Skim.app/Contents/MacOS/Skim'
+
+" PDF sync
+let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
+map ,ls :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR><CR>
