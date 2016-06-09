@@ -23,10 +23,12 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'kien/ctrlp.vim'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'vim-airline/vim-airline'
+Plugin 'rizzatti/dash.vim'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -66,8 +68,10 @@ set hls
 " Enable project specific vim settings
 set exrc
 
-" Open Marked 2 with \m
-:nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr>
+if has("Darwin")
+	:nnoremap <leader>m :silent !open -a "Marked 2.app" '%:p'<cr>
+	" Open Marked 2 with \m
+endif
 
 set tabstop=4
 set shiftwidth=4
@@ -109,14 +113,34 @@ let g:vim_markdown_folding_disabled=1
 
 inoremap <C-q> <ESC>
 
-" Vim-Latex Suite 
+if has("Darwin")
+	" Vim-Latex Suite 
+	filetype plugin on
+	set grepprg=grep\ -nH\ $*
+	filetype indent on
+	let g:tex_flavor='latex'
+	let g:Tex_ViewRule_pdf = '/Applications/Skim.app/Contents/MacOS/Skim'
+	let g:Tex_GotoError=0
+	let g:Tex_DefaultTargetFormat='pdf'
+	let g:Tex_MultipleCompileFormats='pdf'
 
-filetype plugin on
-set grepprg=grep\ -nH\ $*
-filetype indent on
-let g:tex_flavor='latex'
-let g:Tex_ViewRule_pdf = '/Applications/Skim.app/Contents/MacOS/Skim'
+	" PDF sync
+	let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
+	map ,ls :w<CR> :silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR><CR>
 
-" PDF sync
-let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
-map ,ls :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR><CR>
+	" Dash (Mac Only)
+	let g:dash_activate=0
+	:nmap <silent> <leader>d <Plug>DashSearch
+endif
+
+" vim-surround
+let g:surround_126 = "~~\r~~"	" markdown strike
+let g:surround_42 = "**\r**"	" markdown emphasize
+let g:surround_95 = "_\r_"		" markdown italics
+
+" Ultisnips
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<c-b>"
+let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
+let g:UltiSnipsListSnippets = "<c-tab>"
+let g:UltiSnipsEditSplit = "vertical"
