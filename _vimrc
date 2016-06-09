@@ -144,3 +144,9 @@ let g:UltiSnipsJumpForwardTrigger = "<c-b>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
 let g:UltiSnipsListSnippets = "<c-tab>"
 let g:UltiSnipsEditSplit = "vertical"
+
+""""""""""""""""""""
+" vim-airline
+""""""""""""""""""""
+let g:airline_detect_modified=1
+
