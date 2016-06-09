@@ -23,10 +23,13 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'kien/ctrlp.vim'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'vim-airline/vim-airline'
+Plugin 'keith/swift.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -111,12 +114,33 @@ inoremap <C-q> <ESC>
 
 " Vim-Latex Suite 
 
-filetype plugin on
-set grepprg=grep\ -nH\ $*
-filetype indent on
-let g:tex_flavor='latex'
-let g:Tex_ViewRule_pdf = '/Applications/Skim.app/Contents/MacOS/Skim'
+" filetype plugin on
+" set grepprg=grep\ -nH\ $*
+" filetype indent on
+" let g:tex_flavor='latex'
+" let g:Tex_ViewRule_pdf = '/Applications/Skim.app/Contents/MacOS/Skim'
 
 " PDF sync
-let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
-map ,ls :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR><CR>
+" let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
+" map ,ls :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR><CR>
+"
+" Syntastic
+set statusline+=%#warning#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" swfit.vim 
+let g:syntastic_swift_checkers = ['swiftpm', 'swiftlin']
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsListSnippets="<c-tab>"
+let g:UltiSnipsEditSplit="vertical"
+
