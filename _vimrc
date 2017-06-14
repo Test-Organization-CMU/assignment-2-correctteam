@@ -14,7 +14,6 @@ Plugin 'gmarik/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-Plugin 'junegunn/goyo.vim'
 Plugin 'vim-scripts/taglist.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-commentary'
@@ -23,12 +22,19 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'kien/ctrlp.vim'
-Plugin 'derekwyatt/vim-scala'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'vim-airline/vim-airline'
 Plugin 'rizzatti/dash.vim'
-Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+" Plugin 'keith/swift.vim'
+" Plugin 'ensime/ensime-vim'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'mileszs/ack.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+Plugin 'lervag/vimtex'
+Plugin 'vim-syntastic/syntastic'
+
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -64,6 +70,11 @@ colorscheme hybrid
 set ruler
 set nu
 set hls
+
+set guifont=Inconsolata-dz\ for\ Powerline:h16
+
+" Change cursor color so that highlighting is more visible
+highlight Cursor guifg=Yellow guibg=Purple
 
 " Enable project specific vim settings
 set exrc
@@ -114,20 +125,6 @@ let g:vim_markdown_folding_disabled=1
 inoremap <C-q> <ESC>
 
 if has("Darwin")
-	" Vim-Latex Suite 
-	filetype plugin on
-	set grepprg=grep\ -nH\ $*
-	filetype indent on
-	let g:tex_flavor='latex'
-	let g:Tex_ViewRule_pdf = '/Applications/Skim.app/Contents/MacOS/Skim'
-	let g:Tex_GotoError=0
-	let g:Tex_DefaultTargetFormat='pdf'
-	let g:Tex_MultipleCompileFormats='pdf'
-
-	" PDF sync
-	let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 --interaction=nonstopmode $*'
-	map ,ls :w<CR> :silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR><CR>
-
 	" Dash (Mac Only)
 	let g:dash_activate=0
 	:nmap <silent> <leader>d <Plug>DashSearch
@@ -138,15 +135,122 @@ let g:surround_126 = "~~\r~~"	" markdown strike
 let g:surround_42 = "**\r**"	" markdown emphasize
 let g:surround_95 = "_\r_"		" markdown italics
 
-" Ultisnips
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<c-b>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
+" " Ultisnips
+let g:UltiSnipsExpandTrigger = "<c-h>"
+let g:UltiSnipsJumpForwardTrigger = "<c-j>"
+let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 let g:UltiSnipsListSnippets = "<c-tab>"
-let g:UltiSnipsEditSplit = "vertical"
+" let g:UltiSnipsEditSplit = "vertical"
 
 """"""""""""""""""""
 " vim-airline
 """"""""""""""""""""
 let g:airline_detect_modified=1
+let g:airline#extensions#tabline#enabled = 1
 
+""""""""""""""""""""
+" Syntastic
+""""""""""""""""""""
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_ignore_files = ['\m\.sbt$', '\m\.tex$']	" Avoid checking .sbt files and tex files
+" let g:syntastic_scala_checkers = ['fsc']
+" let g:syntastic_tex_checkers = ['chktex']
+
+""""""""""""""""
+" ENSIME
+""""""""""""""""
+autocmd BufWritePost *.scala silent :EnTypeCheck
+nnoremap <localleader>t :EnTypeCheck<CR>
+
+""""""""""""""""
+" ack.vim
+""""""""""""""""
+if executable('ag')
+	let g:ackprg = 'ag --vimgrep'
+endif
+
+"""""""""""""""
+" vimtex
+"""""""""""""""
+" let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+" let g:vimtex_view_general_options = '-r @line @pdf @tex'
+let g:vimtex_view_method = 'skim'
+let g:vimtex_complete_recursive_bib = 1
+let g:vimtex_quickfix_warnings = {
+	\ 'overfull': 0,
+	\ 'Underfull': 0,
+	\}
+let g:vimtex_compiler_latexmk = {
+\ 'background' : 0,
+\ 'build_dir' : '',
+\ 'callback' : 1,
+\ 'continuous' : 1,
+\ 'options' : [
+\   '-pdf',
+\   '-verbose',
+\   '-file-line-error',
+\   '-synctex=1',
+\   '-interaction=nonstopmode',
+\ ],
+\}
+
+" This adds a callback hook that updates Skim after compilation
+" let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+" function! UpdateSkim(status)
+"   if !a:status | return | endif
+
+"   let l:out = b:vimtex.out()
+"   let l:tex = expand('%:p')
+"   let l:cmd = [g:vimtex_view_general_viewer, '-r']
+"   if !empty(system('pgrep Skim'))
+" 	call extend(l:cmd, ['-g'])
+"   endif
+"   if has('nvim')
+" 	call jobstart(l:cmd + [line('.'), l:out, l:tex])
+"   elseif has('job')
+" 	call job_start(l:cmd + [line('.'), l:out, l:tex])
+"   else
+" 	call system(join(l:cmd + [line('.'), shellescape(l:out), shellescape(l:tex)], ' '))
+"   endif
+" endfunction
+
+
+set clipboard=unnamed
+
+""""""""""""""
+" Ensime 
+""""""""""""""
+autocmd BufWritePost *.scala silent :EnTypeCheck
+nnoremap <localleader>t :EnTypeCheck<CR>
+
+
+"""""""""""""""""""""""""""
+" Distraction Free Editing
+"""""""""""""""""""""""""""
+" Turn on distraction free writing mode for latex files
+" au BufNewFile,BufRead *.{tex,bib} call DistractionFreeWriting()
+
+function! DistractionFreeWriting()
+	let g:airline#extensions#tabline#enabled = 0
+	set background=light
+	set lines=40 columns=100	" size of the editable area
+	set linespace=5
+	set fuoptions=background:#00f5f6f6	" MacVim background color
+	set guioptions-=r	" remove MacVim right scroll bar
+	" set fullscreen	" go to full screen mode
+	set tw=80
+	setlocal spell
+endfunction
+
+""""""""""""""""""""""
+" Personal Key Mapping
+""""""""""""""""""""""
+nmap <leader>q gqip
