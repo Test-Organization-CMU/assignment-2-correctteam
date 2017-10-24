@@ -1,6 +1,5 @@
 set nocompatible              " be iMproved, required
-filetype off                  " required
-
+filetype off                  " required 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -24,17 +23,18 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'kien/ctrlp.vim'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'vim-airline/vim-airline'
-Plugin 'keith/swift.vim'
+" Plugin 'keith/swift.vim'
 Plugin 'rizzatti/dash.vim'
 Plugin 'honza/vim-snippets'
 " Plugin 'keith/swift.vim'
 " Plugin 'ensime/ensime-vim'
-Plugin 'derekwyatt/vim-scala'
+" Plugin 'derekwyatt/vim-scala'
 Plugin 'mileszs/ack.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'lervag/vimtex'
-Plugin 'vim-syntastic/syntastic'
+" Plugin 'vim-syntastic/syntastic'
+Plugin 'junegunn/goyo.vim'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -169,7 +169,8 @@ let g:syntastic_ignore_files = ['\m\.sbt$', '\m\.tex$']	" Avoid checking .sbt fi
 " ENSIME
 """"""""""""""""
 autocmd BufWritePost *.scala silent :EnTypeCheck
-nnoremap <localleader>t :EnTypeCheck<CR>
+nnoremap <localleader>t :EnType<CR>
+au FileType scala nnoremap <D-b> :EnDeclaration<CR>
 
 """"""""""""""""
 " ack.vim
@@ -185,15 +186,15 @@ endif
 " let g:vimtex_view_general_options = '-r @line @pdf @tex'
 let g:vimtex_view_method = 'skim'
 let g:vimtex_complete_recursive_bib = 1
-let g:vimtex_quickfix_warnings = {
+let g:vimtex_quickfix_latexlog = {
 	\ 'overfull': 0,
-	\ 'Underfull': 0,
+	\ 'underfull': 0,
 	\}
 let g:vimtex_compiler_latexmk = {
 \ 'background' : 0,
 \ 'build_dir' : '',
 \ 'callback' : 1,
-\ 'continuous' : 1,
+\ 'continuous' : 0,
 \ 'options' : [
 \   '-pdf',
 \   '-verbose',
@@ -255,3 +256,10 @@ endfunction
 " Personal Key Mapping
 """"""""""""""""""""""
 nmap <leader>q gqip
+
+
+""""""""""""""""""""""
+" Goyo
+"""""""""""""""""""""
+let g:goyo_width=100
+let g:goyo_height=120
